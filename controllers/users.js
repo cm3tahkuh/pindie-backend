@@ -25,9 +25,15 @@ const sendUserDeleted = (req, res) => {
   res.end(JSON.stringify(req.user));
   }; 
 
+  const sendMe = (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(req.user));
+  }; 
+
 
 module.exports.sendAllUsers = sendAllUsers;
 module.exports.sendUserCreated = sendUserCreated;
 module.exports.sendUserById = sendUserById;
 module.exports.sendUserUpdated = sendUserUpdated;
 module.exports.sendUserDeleted = sendUserDeleted;
+module.exports.sendMe = sendMe;

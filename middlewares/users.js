@@ -1,8 +1,22 @@
-const users = require('../models/user');
+const users = require("../models/user");
+const bcrypt = require("bcryptjs");
+
+const hashPassword = async (req, res, next) => {
+  try {
+
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hash;
+    next();
+  } catch (error) {
+    res.status(400).send({ message: "Ошибка хеширования пароля" });
+  }
+}; 
+
 
 const findAllUsers = async (req, res, next) => {
 
-  req.usersArray = await users.find({});
+  req.usersArray = await users.find({}, { password: 0 });
   next();
 }
 
@@ -20,7 +34,7 @@ const createUser = async (req, res, next) => {
 const findUserById = async (req, res, next) => {
   console.log("GET /users/:id");
   try {
-    req.user = await users.findById(req.params.id);
+    req.user = await users.findById(req.params.id, { password: 0 });
     next();
   } catch (error) {
     res.status(404).send({ message: "User not found" });
@@ -87,3 +101,4 @@ module.exports.deleteUser = deleteUser;
 module.exports.checkIsUserExists = checkIsUserExists;
 module.exports.checkEmptyNameAndEmailAndPassword = checkEmptyNameAndEmailAndPassword;
 module.exports.checkEmptyNameAndEmail = checkEmptyNameAndEmail;
+module.exports.hashPassword = hashPassword;

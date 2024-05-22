@@ -62,7 +62,7 @@ const useEditableElementsState = gameId => {
       canEditText: true,
       canSetTransparency: true,
       canSetVisibility: false,
-      canSetSource: false
+      canSetSource: true
     },
     {
       name: "image",
